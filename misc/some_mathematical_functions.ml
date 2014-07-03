@@ -135,3 +135,24 @@ else  racine_carre_dichotomique (( a +. b) /. 2.)  b  x epsilone
 ;;
    
 let rec racine_carre x epsilone = racine_carre_dichotomique 0.  x  x epsilone ;; (* J'ai pas reussi a faire ca en une seule fonction *)
+
+(* avec les print *)
+
+let rec racine_carre_dichotomique a  b  x epsilone =
+if (b -. a) < epsilone then [a;b]  
+else
+let () = printf "Current value of the interval: (%f,%f)\n" a b in
+if (carre (( a +. b) /. 2. )) > x then  racine_carre_dichotomique a (( a +. b) /. 2.) x epsilone  
+else  racine_carre_dichotomique (( a +. b) /. 2.)  b  x epsilone  
+;;
+
+(* Application: Babylonian method to compute a root square *)
+
+let rec racine_carre_babylone  x n =
+if n = 0 then x /. 2.
+else 
+0.5 *. (x /. (racine_carre_babylone_rec  x  (n-1)) +. (racine_carre_babylone_rec  x  (n-1)) ) 
+;;
+
+(* et pis c'est fini *)
+
