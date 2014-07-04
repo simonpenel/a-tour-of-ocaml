@@ -146,13 +146,78 @@ if (carre (( a +. b) /. 2. )) > x then  racine_carre_dichotomique a (( a +. b) /
 else  racine_carre_dichotomique (( a +. b) /. 2.)  b  x epsilone  
 ;;
 
+let rec racine_carre x epsilone = racine_carre_dichotomique 0.  x  x epsilone ;;
+
 (* Application: Babylonian method to compute a root square *)
 
-let rec racine_carre_babylone  x n =
+let rec racine_carre_babylone_rec  x n =
 if n = 0 then x /. 2.
 else 
 0.5 *. (x /. (racine_carre_babylone_rec  x  (n-1)) +. (racine_carre_babylone_rec  x  (n-1)) ) 
 ;;
+(* Affichage *)
+
+let rec racine_carre_babylone_rec2  x n =
+if n = 0 then x /. 2.
+else 
+let y = racine_carre_babylone_rec2  x  (n-1) in
+let () = printf "Compare sqrt with babylonian value: (%f,%f)\n" (sqrt x ) y in	(* Pas evident de raisonner avec la logique let / in *)
+0.5 *. (x /. y +. y)  
+
+;;
+
+
+(* Comparaison des methodes 
+
+
+Babylone:
+racine_carre_babylone_rec2 100. 10 ;;
+Compare sqrt with babylonian value: (10.000000,50.000000)
+Compare sqrt with babylonian value: (10.000000,26.000000)
+Compare sqrt with babylonian value: (10.000000,14.923077)
+Compare sqrt with babylonian value: (10.000000,10.812054)
+Compare sqrt with babylonian value: (10.000000,10.030495)
+Compare sqrt with babylonian value: (10.000000,10.000046)
+Compare sqrt with babylonian value: (10.000000,10.000000)
+Compare sqrt with babylonian value: (10.000000,10.000000)
+Compare sqrt with babylonian value: (10.000000,10.000000)
+Compare sqrt with babylonian value: (10.000000,10.000000)
+- : float = 10.
+
+
+A la 5 eme iteration la difference est de 0.000046
+
+Dichotomie:
+
+racine_carre 100. 0.000046  ;;
+Current value of the interval: (0.000000,100.000000)
+Current value of the interval: (0.000000,50.000000)
+Current value of the interval: (0.000000,25.000000)
+Current value of the interval: (0.000000,12.500000)
+Current value of the interval: (6.250000,12.500000)
+Current value of the interval: (9.375000,12.500000)
+Current value of the interval: (9.375000,10.937500)
+Current value of the interval: (9.375000,10.156250)
+Current value of the interval: (9.765625,10.156250)
+Current value of the interval: (9.960938,10.156250)
+Current value of the interval: (9.960938,10.058594)
+Current value of the interval: (9.960938,10.009766)
+Current value of the interval: (9.985352,10.009766)
+Current value of the interval: (9.997559,10.009766)
+Current value of the interval: (9.997559,10.003662)
+Current value of the interval: (9.997559,10.000610)
+Current value of the interval: (9.999084,10.000610)
+Current value of the interval: (9.999847,10.000610)
+Current value of the interval: (9.999847,10.000229)
+Current value of the interval: (9.999847,10.000038)
+Current value of the interval: (9.999943,10.000038)
+Current value of the interval: (9.999990,10.000038)
+- : float list = [9.99999046326; 10.0000143051]
+
+Il faut 22 iterations
+
+*)
+
 
 (* et pis c'est fini *)
 
