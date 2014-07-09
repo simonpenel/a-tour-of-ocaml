@@ -41,3 +41,41 @@ let     get_ligne_lengths fichier = 				(* donne la liste des longueurs d'une li
 let     get_nbchar fichier = 					(* donne le nombre de char dans un fichier *)
 	somme_entiers_lfold (get_ligne_lengths fichier)		(* attention les lignes vides ne sont pas comptabilisees *)
 ;;
+
+let 	get_nbchar_slist slist = 				(* donne le nombre de char dans une liste de string *)
+	somme_entiers_lfold (List.map  ~f:String.length slist )	
+	;;
+
+	
+(* Counting words *)
+
+let split_chaine chaine =
+	List.filter ~f:(fun x -> (String.length x )>  0) (String.split_on_chars chaine [' ';'\t']	)	(* Je supprime les mots de longueur 0*)	
+	(* Une doc indique val split_on_chars : string -> on:char list -> escape_char:char -> string list Probleme de version?*)
+	
+	;;
+
+let nb_mots_chaine chaine =			(* nombre de mots dans une chaine*)
+	List.length (split_chaine chaine )
+	;;
+
+let nb_mots_slist slist =			(* nombre de mots dans une liste de chaine*)
+	somme_entiers_lfold (List.map  ~f:nb_mots_chaine slist )	
+	;;
+	
+	
+(* Command-line interface *)
+
+
+  
+
+let wc fichier =							(* Renvoie bv de lignes, mots, characteres (nb de char est faux car pas de prise en compte des "retour chariot" *)
+  let slignes =  get_lignes  fichier in
+  [List.length slignes;nb_mots_slist slignes; get_nbchar_slist slignes]
+  ;;
+  
+
+
+let main  () =
+   List.nth_exn (Array.to_list Sys.argv ) 0 				(* Je ne comprend pas comment ( et pourquoi ) on doit definir cette fonction ...  *)
+;;
