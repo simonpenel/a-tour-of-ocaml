@@ -71,8 +71,18 @@ let nb_mots_slist slist =			(* nombre de mots dans une liste de chaine*)
   
 
 let wc () =							(* Renvoie bv de lignes, mots, characteres (nb de char est faux car pas de prise en compte des "retour chariot" *)
-  let slignes =  get_lignes  Sys.argv.(1) in
+  if Array.length Sys.argv > 1 then
+  let premierarg = Sys.argv.(1) in 
+  if Sys.file_exists_exn premierarg then
+  if Sys.is_file_exn  premierarg then
+  let slignes =  get_lignes  premierarg in
   let nlines, nmots, nchar = (List.length slignes, nb_mots_slist slignes, get_nbchar_slist slignes) in
   printf "%d %d %d\n" nlines nmots nchar
+  else
+  printf "impossible de traiter un repertoire\n"
+  else
+  printf "fichier d'entree inexistant\n"
+  else
+  printf "pas de fichier d'entree\n"
   ;;
 wc () ;;
